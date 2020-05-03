@@ -28,14 +28,25 @@ public class MovingFigure : Figure
         List<Vector3> f = GetClearDirection(dir);
         List<Vector3> s = staticFigure.GetClearDirection(dir*-1);
         float minDist = Mathf.Infinity;
+        Debug.Log("f");
+        foreach (Vector3 v in f)
+        {
+            Debug.Log(v);
+        }
+        Debug.Log("s");
+        foreach (Vector3 v in s)
+        {
+            Debug.Log(v);
+        }
 
 
         float dist;
         List<Vector3> underItems = new List<Vector3>();
         float corner;
+        Debug.Log("UnderItems");
         foreach (Vector3 fc in f)
         {
-            
+            Debug.Log("All for " + fc);
             if (dir == Vector3.up)
             {
                 underItems = s.FindAll(c => c.x == fc.x && c.y > fc.y && c.z == fc.z);
@@ -43,7 +54,7 @@ public class MovingFigure : Figure
                 {
                     corner = underItems.Min(c => c.y);
                     dist = fc.y - corner;
-                    minDist = Mathf.Min(dist, minDist);
+                    minDist = Mathf.Min(Mathf.Abs(dist), minDist);
                 }
             }
             if (dir == Vector3.down)
@@ -53,7 +64,7 @@ public class MovingFigure : Figure
                 {
                     corner = underItems.Max(c => c.y);
                     dist = fc.y - corner;
-                    minDist = Mathf.Min(dist, minDist);
+                    minDist = Mathf.Min(Mathf.Abs(dist), minDist);
                 }
             }
             if (dir == Vector3.right)
@@ -63,7 +74,7 @@ public class MovingFigure : Figure
                 {
                     corner = underItems.Min(c => c.x);
                     dist = fc.x - corner;
-                    minDist = Mathf.Min(dist, minDist);
+                    minDist = Mathf.Min(Mathf.Abs(dist), minDist);
                 }
             }
             if (dir == Vector3.left)
@@ -73,7 +84,7 @@ public class MovingFigure : Figure
                 {
                     corner = underItems.Max(c => c.x);
                     dist = fc.x - corner;
-                    minDist = Mathf.Min(dist, minDist);
+                    minDist = Mathf.Min(Mathf.Abs(dist), minDist);
                 }
             }
             if (dir == Vector3.forward)
@@ -83,7 +94,7 @@ public class MovingFigure : Figure
                 {
                     corner = underItems.Min(c => c.z);
                     dist = fc.z - corner;
-                    minDist = Mathf.Min(dist, minDist);
+                    minDist = Mathf.Min(Mathf.Abs(dist), minDist);
                 }
             }
             if (dir == Vector3.back)
@@ -93,10 +104,18 @@ public class MovingFigure : Figure
                 {
                     corner = underItems.Max(c => c.z);
                     dist = fc.z - corner;
-                    minDist = Mathf.Min(dist, minDist);
+                    minDist = Mathf.Min(Mathf.Abs(dist), minDist);
                 }
             }
+            foreach (Vector3 v in underItems)
+            {
+                Debug.Log(v);
+            }
         }
+
+        
+        
+        Debug.Log("==="); 
         Debug.Log(dir);
         Debug.Log(minDist);
         if (minDist == Mathf.Infinity)
@@ -147,5 +166,15 @@ public class MovingFigure : Figure
         while (anim.isPlaying)
             yield return null;
         falling = false;
+        CheckSuccess();
+    }
+
+
+    void CheckSuccess()
+    {
+        if (coordinates == staticFigure.info.goalCoordinates)
+        {
+            LevelController.instance.NextLevel();
+        }
     }
 }

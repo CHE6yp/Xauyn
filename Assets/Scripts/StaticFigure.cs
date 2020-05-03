@@ -9,6 +9,13 @@ public class StaticFigure : Figure
 
     private void Start()
     {
+        //CreateGoal();
+    }
+
+    public override void CreateFigure(FigureInfo i)
+    {
+        ClearGoal();
+        base.CreateFigure(i);
         CreateGoal();
     }
 
@@ -18,5 +25,10 @@ public class StaticFigure : Figure
 
         goal.transform.SetParent(transform);
         goal.transform.localPosition = info.goalCoordinates;
+    }
+
+    void ClearGoal()
+    {
+        Destroy(goal);
     }
 }

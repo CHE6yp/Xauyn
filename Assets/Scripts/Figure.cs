@@ -13,16 +13,26 @@ public class Figure : MonoBehaviour
     // Start is called before the first frame update
     void Awake()
     {
-        CreateFigure();
-        //items = GetComponentsInChildren<Item>().ToList();
+        //CreateFigure();
     }
 
-    void CreateFigure()
+    public virtual void CreateFigure(FigureInfo i)
     {
+        ClearFigure();
+        items = new List<Item>();
+        info = i;
         transform.position = coordinates = info.coordinates;
         foreach(Vector3 crd in info.items)
         {
             AddItem(crd);
+        }
+    }
+
+    void ClearFigure()
+    {
+        foreach (Item i in items)
+        {
+            Destroy(i.gameObject);
         }
     }
 
@@ -54,21 +64,6 @@ public class Figure : MonoBehaviour
             );
 
             if (items.Find(predicate) == null)
-            {
-                coords.Add(item.coordinates + coordinates);
-            }
-        }
-        return coords;
-    }
-
-
-    //Someday :'(
-    public List<Vector3> GetClearDirection(System.Predicate<Vector3> predicate)
-    {
-        List<Vector3> coords = new List<Vector3>();
-        foreach (Item item in items)
-        {
-            if (items.Find(i => i.coordinates.x == item.coordinates.x && i.coordinates.z == item.coordinates.z && i.coordinates.y == item.coordinates.y - 1) == null)
             {
                 coords.Add(item.coordinates + coordinates);
             }

@@ -10,11 +10,20 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c5289406cdfff184ea3f2aab9e322aca, type: 3}
-  m_Name: Figure4
+  m_Name: SFigure5
   m_EditorClassIdentifier: 
-  coordinates: {x: 0, y: 1, z: 0}
+  coordinates: {x: 0, y: 0, z: 0}
+  goalCoordinates: {x: 3, y: 0, z: 0}
   items:
-  - {x: 0, y: 0, z: 0}
-  - {x: 1, y: 0, z: 0}
-  - {x: 0, y: 0, z: 2}
-  - {x: 1, y: 0, z: 3}
+  - {x: 1, y: 0, z: 2}
+  - {x: -1, y: 0, z: 2}
+  - {x: 0, y: 1, z: 2}
+  - {x: 0, y: -1, z: 2}
+  - {x: 0, y: 0, z: 5}
+  - {x: -4, y: 0, z: 3}
+  - {x: -3, y: 0, z: -4}
+  - {x: -3, y: 3, z: -3}
+  - {x: 4, y: 2, z: -3}
+  - {x: 3, y: 2, z: 2}
+  - {x: 3, y: -1, z: 1}
+  - {x: 2, y: 0, z: 0}
