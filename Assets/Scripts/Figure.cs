@@ -37,32 +37,6 @@ public class Figure : MonoBehaviour
         items.Add(i);
     }
 
-
-    public List<Vector3> GetClearDown()
-    {
-        List<Vector3> coords = new List<Vector3>();
-        foreach (Item item in items){
-            if (items.Find(i => i.coordinates.x == item.coordinates.x && i.coordinates.z == item.coordinates.z && i.coordinates.y == item.coordinates.y-1) == null)
-            {
-                coords.Add(item.coordinates + coordinates);
-            }
-        }
-        return coords;
-    }
-
-    public List<Vector3> GetClearUp()
-    {
-        List<Vector3> coords = new List<Vector3>();
-        foreach (Item item in items)
-        {
-            if (items.Find(i => i.coordinates.x == item.coordinates.x && i.coordinates.z == item.coordinates.z && i.coordinates.y == item.coordinates.y + 1) == null)
-            {
-                coords.Add(item.coordinates + coordinates);
-            }
-        }
-        return coords;
-    }
-
     /// <summary>
     /// Метод выдает список координат для предметов, у которых нету соседнего предмета в сторону, которая пришла в аргументе
     /// </summary>

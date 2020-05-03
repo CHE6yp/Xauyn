@@ -7,5 +7,7 @@ using UnityEngine;
 public class FigureInfo : ScriptableObject
 {
     public Vector3 coordinates;
+
+    public Vector3 goalCoordinates;
     public List<Vector3> items;
 }
