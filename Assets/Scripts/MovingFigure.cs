@@ -9,6 +9,7 @@ public class MovingFigure : Figure
     public float moveSpeed = 0.1f;
     Vector3 destination;
     bool falling;
+    bool failure;
     public Figure staticFigure;
 
     public void Move(Vector3 dir)
@@ -112,8 +113,6 @@ public class MovingFigure : Figure
                 Debug.Log(v);
             }
         }
-
-        
         
         Debug.Log("==="); 
         Debug.Log(dir);
@@ -121,6 +120,7 @@ public class MovingFigure : Figure
         if (minDist == Mathf.Infinity)
         {
             Debug.Log("Ouch");
+            failure = true;
             return dir * 15;
         }
         return dir*(Mathf.Abs(minDist)-1);
@@ -169,11 +169,18 @@ public class MovingFigure : Figure
         CheckSuccess();
     }
 
-
     void CheckSuccess()
     {
+        if (failure)
+        {
+            AudioController.instance.Wrong();
+            failure = false;
+            LevelController.instance.Restart();
+        }
+
         if (coordinates == staticFigure.info.goalCoordinates)
         {
+            AudioController.instance.Right();
             LevelController.instance.NextLevel();
         }
     }

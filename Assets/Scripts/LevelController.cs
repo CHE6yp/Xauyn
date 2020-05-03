@@ -34,9 +34,14 @@ public class LevelController : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.R))
         {
-            levelIndex = (levelIndex == 0) ? levels.Count - 1 : levelIndex-1;
-            NextLevel();
+            Restart();
         }
+    }
+
+    public void Restart()
+    {
+        levelIndex = (levelIndex == 0) ? levels.Count - 1 : levelIndex - 1;
+        NextLevel();
     }
 }
 
