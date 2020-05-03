@@ -14,18 +14,57 @@ public class MovingFigure : Figure
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Space))
+        if (!falling)
         {
-            fallDirection = CountDistance();
-            destination = transform.position + fallDirection;
-            falling = true;
-            StartCoroutine(Drop());
-            coordinates = destination;
+            if (Input.GetKeyDown(KeyCode.Space))
+            {
+                fallDirection = CountDistanceDown();
+                destination = transform.position + fallDirection;
+                falling = true;
+                StartCoroutine(Drop());
+                coordinates = destination;
+            }
+
+            if (Input.GetKeyDown(KeyCode.LeftShift))
+            {
+                fallDirection = CountDistanceUp();
+                destination = transform.position + fallDirection;
+                falling = true;
+                StartCoroutine(Drop());
+                coordinates = destination;
+            }
         }
 
     }
 
-    Vector3 CountDistance()
+
+    Vector3 CountDistanceUp()
+    {
+        List<Vector3> f = GetClearUpY();
+        List<Vector3> s = staticFigure.GetClearDownY();
+        float minDist = Mathf.Infinity;
+
+        foreach (Vector3 fc in f)
+        {
+            float dist;
+            List<Vector3> underItems = s.FindAll(c => c.x == fc.x && c.z == fc.z && c.y > fc.y);
+            if (underItems.Count > 0)
+            {
+                float minY = underItems.Min(c => c.y);
+                dist = fc.y - minY;
+                minDist = Mathf.Min(dist, minDist);
+            }
+        }
+
+        if (minDist == Mathf.Infinity)
+        {
+            Debug.Log("Ouch");
+            return new Vector3(0, 15, 0);
+        }
+        return new Vector3(0, -minDist - 1, 0);
+    }
+
+    Vector3 CountDistanceDown()
     {
         List<Vector3> f = GetClearDownY();
         List<Vector3> s = staticFigure.GetClearUpY();
@@ -91,6 +130,6 @@ public class MovingFigure : Figure
         anim.Play("tmp");
         while (anim.isPlaying)
             yield return null;
-        falling = true;
+        falling = false;
     }
 }
