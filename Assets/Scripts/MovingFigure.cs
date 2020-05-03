@@ -11,81 +11,101 @@ public class MovingFigure : Figure
     bool falling;
     public Figure staticFigure;
 
-    public void GoUp()
+    public void Move(Vector3 dir)
     {
         if (falling) return;
 
-        fallDirection = CountDistanceUp();
+        fallDirection = CountDistance(dir);
+        Debug.Log(fallDirection);
         destination = transform.position + fallDirection;
         falling = true;
         StartCoroutine(Drop());
         coordinates = destination;
     }
 
-    public void GoDown()
+    Vector3 CountDistance(Vector3 dir)
     {
-        if (falling) return;
-
-        fallDirection = CountDistanceDown(); 
-         destination = transform.position + fallDirection;
-        falling = true;
-        StartCoroutine(Drop());
-        coordinates = destination;
-    }
-
-
-    Vector3 CountDistanceUp()
-    {
-        List<Vector3> f = GetClearUpY();
-        List<Vector3> s = staticFigure.GetClearDownY();
+        List<Vector3> f = GetClearDirection(dir);
+        List<Vector3> s = staticFigure.GetClearDirection(dir*-1);
         float minDist = Mathf.Infinity;
 
+
+        float dist;
+        List<Vector3> underItems = new List<Vector3>();
+        float corner;
         foreach (Vector3 fc in f)
         {
-            float dist;
-            List<Vector3> underItems = s.FindAll(c => c.x == fc.x && c.z == fc.z && c.y > fc.y);
-            if (underItems.Count > 0)
+            
+            if (dir == Vector3.up)
             {
-                float minY = underItems.Min(c => c.y);
-                dist = fc.y - minY;
-                minDist = Mathf.Min(dist, minDist);
+                underItems = s.FindAll(c => c.x == fc.x && c.y > fc.y && c.z == fc.z);
+                if (underItems.Count > 0)
+                {
+                    corner = underItems.Min(c => c.y);
+                    dist = fc.y - corner;
+                    minDist = Mathf.Min(dist, minDist);
+                }
+            }
+            if (dir == Vector3.down)
+            {
+                underItems = s.FindAll(c => c.x == fc.x && c.y < fc.y && c.z == fc.z);
+                if (underItems.Count > 0)
+                {
+                    corner = underItems.Max(c => c.y);
+                    dist = fc.y - corner;
+                    minDist = Mathf.Min(dist, minDist);
+                }
+            }
+            if (dir == Vector3.right)
+            {
+                underItems = s.FindAll(c => c.x > fc.x && c.y == fc.y && c.z == fc.z);
+                if (underItems.Count > 0)
+                {
+                    corner = underItems.Min(c => c.x);
+                    dist = fc.x - corner;
+                    minDist = Mathf.Min(dist, minDist);
+                }
+            }
+            if (dir == Vector3.left)
+            {
+                underItems = s.FindAll(c => c.x < fc.x && c.y == fc.y && c.z == fc.z);
+                if (underItems.Count > 0)
+                {
+                    corner = underItems.Max(c => c.x);
+                    dist = fc.x - corner;
+                    minDist = Mathf.Min(dist, minDist);
+                }
+            }
+            if (dir == Vector3.forward)
+            {
+                underItems = s.FindAll(c => c.x == fc.x && c.y == fc.y && c.z > fc.z);
+                if (underItems.Count > 0)
+                {
+                    corner = underItems.Min(c => c.z);
+                    dist = fc.z - corner;
+                    minDist = Mathf.Min(dist, minDist);
+                }
+            }
+            if (dir == Vector3.back)
+            {
+                underItems = s.FindAll(c => c.x == fc.x && c.y == fc.y && c.z < fc.z);
+                if (underItems.Count > 0)
+                {
+                    corner = underItems.Max(c => c.z);
+                    dist = fc.z - corner;
+                    minDist = Mathf.Min(dist, minDist);
+                }
             }
         }
-
+        Debug.Log(dir);
+        Debug.Log(minDist);
         if (minDist == Mathf.Infinity)
         {
             Debug.Log("Ouch");
-            return new Vector3(0, 15, 0);
+            return dir * 15;
         }
-        return new Vector3(0, -minDist - 1, 0);
+        return dir*(Mathf.Abs(minDist)-1);
     }
-
-    Vector3 CountDistanceDown()
-    {
-        List<Vector3> f = GetClearDownY();
-        List<Vector3> s = staticFigure.GetClearUpY();
-        float minDist = Mathf.Infinity;
-
-        foreach(Vector3 fc in f)
-        {
-            float dist;
-            List<Vector3> underItems = s.FindAll(c => c.x == fc.x && c.z == fc.z && c.y < fc.y);
-            if (underItems.Count>0)
-            {
-                float maxY = underItems.Max(c => c.y);
-                dist = fc.y - maxY;
-                minDist = Mathf.Min(dist, minDist);
-            }
-        }
-
-        if (minDist == Mathf.Infinity)
-        {
-            Debug.Log("Ouch");
-            return new Vector3(0, -15, 0);
-        }
-        return new Vector3(0, -minDist + 1, 0);
-    }
-
 
     /// <summary>
     /// Процедурно создаем анимацию падения предмета в зависимости от высоты. И дропаем

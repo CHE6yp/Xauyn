@@ -10,17 +10,11 @@ public class FigureDirection : MonoBehaviour
     private void Awake()
     {
         figure = transform.parent.parent.GetComponent<MovingFigure>();
+        direction = transform.localPosition;
     }
 
     public void Move()
     {
-        if (direction == Vector3.up)
-        {
-            figure.GoUp();
-        }
-        if (direction == Vector3.down)
-        {
-            figure.GoDown();
-        }
+        figure.Move(direction);
     }
 }
