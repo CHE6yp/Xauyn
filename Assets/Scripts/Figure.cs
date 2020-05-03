@@ -5,6 +5,7 @@ using UnityEngine;
 
 public class Figure : MonoBehaviour
 {
+    public FigureInfo info;
     public Vector3 coordinates;
     public List<Item> items;
     public GameObject itemPref;
@@ -12,14 +13,25 @@ public class Figure : MonoBehaviour
     // Start is called before the first frame update
     void Awake()
     {
-        items = GetComponentsInChildren<Item>().ToList();
+        CreateFigure();
+        //items = GetComponentsInChildren<Item>().ToList();
+    }
+
+    void CreateFigure()
+    {
+        transform.position = coordinates = info.coordinates;
+        foreach(Vector3 crd in info.items)
+        {
+            AddItem(crd);
+        }
     }
 
     public void AddItem(Vector3 coordinates)
     {
         GameObject obj = Instantiate(itemPref);
-        obj.transform.position = coordinates;
+
         obj.transform.SetParent(transform);
+        obj.transform.localPosition = coordinates;
         Item i = obj.GetComponent<Item>();
         i.coordinates = obj.transform.localPosition;
         items.Add(i);

@@ -6,5 +6,6 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "FigureData", menuName = "ScriptableObjects/FigureInfo", order = 1)]
 public class FigureInfo : ScriptableObject
 {
-    public Vector3 coordinated;
+    public Vector3 coordinates;
+    public List<Vector3> items;
 }
