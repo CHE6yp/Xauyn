@@ -19,7 +19,8 @@ public class PlayerInteraction : MonoBehaviour
             //Debug.Log(hit.collider.name);
             if (Input.GetButtonDown("Fire1"))
             {
-                hit.collider.GetComponent<ItemPlace>().AddObject(itemPref);
+                //hit.collider.GetComponent<ItemPlace>().AddObject(itemPref);
+                hit.collider.GetComponent<FigureDirection>().Move();
             }
         }
     }

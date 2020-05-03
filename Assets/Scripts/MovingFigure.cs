@@ -11,30 +11,26 @@ public class MovingFigure : Figure
     bool falling;
     public Figure staticFigure;
 
-    // Update is called once per frame
-    void Update()
+    public void GoUp()
     {
-        if (!falling)
-        {
-            if (Input.GetKeyDown(KeyCode.Space))
-            {
-                fallDirection = CountDistanceDown();
-                destination = transform.position + fallDirection;
-                falling = true;
-                StartCoroutine(Drop());
-                coordinates = destination;
-            }
+        if (falling) return;
 
-            if (Input.GetKeyDown(KeyCode.LeftShift))
-            {
-                fallDirection = CountDistanceUp();
-                destination = transform.position + fallDirection;
-                falling = true;
-                StartCoroutine(Drop());
-                coordinates = destination;
-            }
-        }
+        fallDirection = CountDistanceUp();
+        destination = transform.position + fallDirection;
+        falling = true;
+        StartCoroutine(Drop());
+        coordinates = destination;
+    }
 
+    public void GoDown()
+    {
+        if (falling) return;
+
+        fallDirection = CountDistanceDown(); 
+         destination = transform.position + fallDirection;
+        falling = true;
+        StartCoroutine(Drop());
+        coordinates = destination;
     }
 
 
